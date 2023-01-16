@@ -1,5 +1,5 @@
 # MangadexLicensed
-A small firefox extension written in JS to check if a manga is licensed or not in english, check on any https://mangadex.org/title/ if the manga is licensed !
+A small firefox extension written in JS to check if a manga is licensed or not in english, check on any https://mangadex.org/title/ if the manga is licensed ! You have to refresh once on the title page to get the info
 
 Don't you ever find it annoying to have to look if a manga is licensed in English to buy it , well you are at the right place !
 
