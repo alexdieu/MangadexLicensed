@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Mangadex Licensed",
-    "version": "1.0",
+    "version": "1.0.1",
     "permissions": ["https://api.mangaupdates.com/v1/series/","https://api.mangaupdates.com/v1/series/search"],
     "content_scripts": [
         {
