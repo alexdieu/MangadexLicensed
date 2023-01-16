@@ -20,7 +20,17 @@ function checkMangaLicensed(mangaName) {
   }).then(searchResponse => {
     return searchResponse.json().then(searchBody => {
       if (searchBody.results.length > 0) {
-        let series_id = searchBody.results[0].record.series_id;
+        let bestMatchIndex;
+        let highestScore = 0;
+        searchBody.results.forEach((result, index) => {
+          const title = result.hit_title.toLowerCase();
+          const score = calculateScore(title, mangaName.toLowerCase());
+          if (score > highestScore) {
+            highestScore = score;
+            bestMatchIndex = index;
+          }
+        });
+        let series_id = searchBody.results[bestMatchIndex].record.series_id;
         const seriesOptions = {
           method: 'GET',
           url: `https://api.mangaupdates.com/v1/series/${series_id}`,
@@ -48,20 +58,45 @@ function checkMangaLicensed(mangaName) {
 }
 
 
+function calculateScore(str1, str2) {
+  let score = 0;
+  for (let i = 0; i < str1.length; i++) {
+    if (str1[i] === str2[i]) {
+      score++;
+    }
+  }
+  if (str1.includes("(novel)")) {
+    score -= 500;
+  }
+  if (str2.includes("(novel)")) {
+    score -= 500;
+  }
+  if (str1.length > str2.length) {
+    score -= (str1.length - str2.length);
+  } else if (str2.length > str1.length) {
+    score -= (str2.length - str1.length);
+  }
+  if (score < 0) {
+    score = 0;
+  }
+  return score;
+}
+
+let manga;
+let isLicensed;
+const label = document.createElement('span');
+label.classList.add('licensed-label');
 
 document.addEventListener("DOMContentLoaded", async function() {
-  let mangaCards = document.getElementsByClassName('manga-card');
-  while (mangaCards.length === 0){
-    await new Promise(resolve => setTimeout(resolve, 100));
-    mangaCards = document.getElementsByClassName('manga-card');
-  }
-  for (let card of mangaCards) {
-    const title = card.querySelector('a.title span').textContent;
-    const isLicensed = await checkMangaLicensed(title);
-    const label = document.createElement('div');
-    label.classList.add('licensed-label');
-    label.innerText = isLicensed ? 'Licensed in english' : 'Not Licensed in english';
-    card.appendChild(label);
-  }
+  let checkManga = setInterval(async function() {
+    manga = document.querySelector('div.title > p');
+    if (manga) {
+      clearInterval(checkManga);
+      const isLicensed = await checkMangaLicensed(manga.innerText);
+      label.innerText = isLicensed ? ',Licensed in english' : ',Not Licensed in english';
+      document.querySelector('span.tag.dot.no-wrapper').appendChild(label);
+    }
+  }, 100);
 });
+
 document.dispatchEvent(new Event('DOMContentLoaded'));
