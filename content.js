@@ -1,4 +1,3 @@
-
 function checkMangaLicensed(mangaName) {
   const searchOptions = {
     method: 'POST',
