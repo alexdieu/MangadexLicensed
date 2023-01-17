@@ -6,3 +6,5 @@ Don't you ever find it annoying to have to look if a manga is licensed in Englis
 This extension use the MangaUpdate API : https://api.mangaupdates.com/
 
 Working on it to get it better
+
+Addon : https://addons.mozilla.org/en-US/firefox/addon/mangadex-licensed
