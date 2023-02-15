@@ -4,7 +4,7 @@ function checkMangaLicensed(mangaName) {
     url: 'https://api.mangaupdates.com/v1/series/search',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'bearerAuth'
+      'Authorization': 'bearerAuth' /*if you got any authorization key from the mangaupdate API put it here*/
     },
     body: {
       search: mangaName,
